@@ -591,6 +591,17 @@ def plot(cfg, info, path):
     colours = {"stowed": "tab:gray", "tuck": "tab:brown", "clear": "tab:orange", "above": "tab:olive", "target": "tab:green",
                "lean_back": "tab:blue", "lean_in": "tab:purple"}
     views = [("Top view (x-y)", 0, 1), ("Front view (x-z)", 0, 2), ("Side view (y-z)", 1, 2)]
+
+    # Zoom to what matters: the arm in every pose, you, and real objects (monitors, a CRT...).
+    # Walls are huge keep-out boxes and would otherwise shrink everything to a speck.
+    focus = [p for pose in info["poses"].values() for p in sample_body(arm.points(pose))]
+    focus.append(tuple(cfg["user"]["mouth"]))
+    small = [k for k in desk.keepouts if max(k[1][1] - k[1][0], k[2][1] - k[2][0]) < 3000]
+    focus += [(x, y, z) for _, kx, ky, kz in small for x in kx for y in ky for z in kz]
+    lo = [min(p[a] for p in focus) - 250 for a in range(3)]
+    hi = [max(p[a] for p in focus) + 250 for a in range(3)]
+    lo[2] = min(lo[2], (desk.floor if cfg["checks"]["stow_below_desk"] else desk.under) - 100)
+
     fig, axes = plt.subplots(1, 3, figsize=(17, 6))
     for ax, (title, i, j) in zip(axes, views):
         for k, (bx, by) in enumerate(desk.boxes):
@@ -599,8 +610,17 @@ def plot(cfg, info, path):
                                        color="burlywood", alpha=0.4, label="desk" if k == 0 else None))
         for name, kx, ky, kz in desk.keepouts:
             span = {0: kx, 1: ky, 2: kz}
+            if (name, kx, ky, kz) not in small:  # a wall: draw its face as a line, not a box over everything
+                for axis, line in ((i, ax.axvline), (j, ax.axhline)):
+                    for edge in span[axis]:
+                        if lo[axis] < edge < hi[axis]:
+                            line(edge, color="dimgray", lw=3)
+                continue
             ax.add_patch(plt.Rectangle((span[i][0], span[j][0]), span[i][1] - span[i][0], span[j][1] - span[j][0],
                                        color="tab:red", alpha=0.2))
+            ci, cj = sum(span[i]) / 2, sum(span[j]) / 2
+            if i == 0 and j == 1 and lo[i] < ci < hi[i] and lo[j] < cj < hi[j]:
+                ax.text(ci, cj, name, fontsize=7, ha="center", va="center", color="darkred")
         if j == 2:
             ax.axhline(desk.floor, color="k", lw=1)
         for a, b in zip(info["path"], info["path"][1:]):
@@ -613,7 +633,9 @@ def plot(cfg, info, path):
         mouth = cfg["user"]["mouth"]
         ax.plot(mouth[i], mouth[j], "r*", ms=12, label="mouth")
         ax.set_title(title)
-        ax.set_aspect("equal")
+        ax.set_xlim(lo[i], hi[i])
+        ax.set_ylim(lo[j], hi[j])
+        ax.set_aspect("equal", adjustable="box")
         ax.grid(alpha=0.3)
     axes[0].legend(loc="best", fontsize=8)
     path.parent.mkdir(parents=True, exist_ok=True)
