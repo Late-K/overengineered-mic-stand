@@ -1,0 +1,181 @@
+{
+  "_notes": [
+    "Jeremi's L-desk. Frame: origin on the clamp's yaw axis; +x = out from the side desk's front edge (towards you),",
+    "+y = along that edge towards the room, z = up from the shoulder pivot (8 cm above the desk).",
+    "Clamp 30 cm along the side desk from the inside corner of the L. Mouth 35-73 cm behind the main desk edge;",
+    "the mouth here is the middle of that lean and tracking covers +/-19 cm.",
+    "Assumed: monitors 20 cm deep, screen front 24.2 cm from the wall; CRT 38 cm deep on the corner diagonal,",
+    "Parks folded at the clamp: upper arm up, forearm folded down beside it, mic flipped up by the wrist,",
+    "standing on a clear patch of the side desk (3 cm clearance there; keyboard/mouse zone is a keep-out)."
+  ],
+  "geometry": {
+    "upper_arm": 400,
+    "forearm": 400,
+    "head_offset_r": 90
+  },
+  "desk": {
+    "top_height": 805,
+    "thickness": 34,
+    "boxes": [
+      {
+        "x": [
+          -580,
+          -60
+        ],
+        "y": [
+          -1000,
+          410
+        ]
+      },
+      {
+        "x": [
+          -580,
+          1860
+        ],
+        "y": [
+          -1000,
+          -300
+        ]
+      }
+    ],
+    "clearance_over_desk": 30
+  },
+  "keepouts": [
+    {
+      "name": "wall behind the desk",
+      "x": [
+        -5000,
+        5000
+      ],
+      "y": [
+        -5000,
+        -1000
+      ],
+      "z": [
+        -2000,
+        3000
+      ]
+    },
+    {
+      "name": "wall beside the side desk",
+      "x": [
+        -5000,
+        -580
+      ],
+      "y": [
+        -5000,
+        5000
+      ],
+      "z": [
+        -2000,
+        3000
+      ]
+    },
+    {
+      "name": "main monitor",
+      "x": [
+        423.6,
+        837.6
+      ],
+      "y": [
+        -958,
+        -758
+      ],
+      "z": [
+        -80,
+        331
+      ]
+    },
+    {
+      "name": "second monitor",
+      "x": [
+        857.6,
+        1292.6
+      ],
+      "y": [
+        -958,
+        -758
+      ],
+      "z": [
+        -80,
+        335
+      ]
+    },
+    {
+      "name": "CRT TV",
+      "x": [
+        -485.0,
+        -130.0
+      ],
+      "y": [
+        -927.5,
+        -547.5
+      ],
+      "z": [
+        -80,
+        300
+      ]
+    },
+    {
+      "name": "keyboard / mouse",
+      "x": [
+        230.6,
+        880.6
+      ],
+      "y": [
+        -680,
+        -300
+      ],
+      "z": [
+        -80,
+        20
+      ]
+    }
+  ],
+  "user": {
+    "mouth": [
+      630.6,
+      240,
+      270
+    ],
+    "approach": [
+      0,
+      -1,
+      -0.2
+    ],
+    "track_range": 190
+  },
+  "waypoints": {
+    "stowed": [
+      180,
+      78,
+      -80,
+      185
+    ],
+    "unfold": [
+      330,
+      78,
+      20,
+      0
+    ]
+  },
+  "checks": {
+    "stow_below_desk": false
+  },
+  "limits": {
+    "yaw": [
+      180,
+      420
+    ],
+    "wrist": [
+      0,
+      190
+    ]
+  },
+  "mass_kg": {
+    "payload": 1.0
+  },
+  "drive": {
+    "ratio": 18
+  }
+}

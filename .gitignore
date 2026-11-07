@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+sim/out/
+.pio/
+build/
+dist/
+*.spec
